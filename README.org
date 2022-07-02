@@ -1,0 +1,531 @@
+#+TITLE: Pemrograman Literasi
+#+AUTHOR: Fikri Rahmat Nurhidayat
+#+EMAIL: fikrirnurhidayat@gmail.com
+
+* Kamu mau ngapain sih, Fik?
+
+Gatau, gabut, yaudah aku bikin video aja.
+
+Pernah ga sih kalian ngoding sesuatu, terus kalian ninggalin kodingan itu selama 1 abad terus tau-tau balik lagi ke kode itu dan kalian bingung buat memahaminya?
+
+Ahah, masalah klasik dari seorang /programmer/, yaitu tidak pernah mendokumentasikan kode dengan baik.
+
+Di presentasi ini kita bakal bahas apa sih pemrograman literasi itu, dan kenapa kok ini keren banget buat kita sebagai programmer untuk mulai mencobanya.
+
+* Pemrograman Literasi, apaan tuh?
+
+Mungkin kamu sebagai programmer udah bosen lah denger istilah =Something Programming=, sebagai contoh:
+
+- /Object Oriented Programming/ (Pemrograman Berbasis Objek)
+- /Functional Programming/ (Pemrograman Fungsional)
+- /Declarative Programming/ (Pemrograman Deklaratif)
+- /Imperative Programming/ (Pemrograman Imperatif)
+- Dan sebagainya.
+
+Nah dari segala jenis teknik pemrograman, ada satu teknik pemrograman yang bisa dibilang sangat unik, yaitu /Literate Programming/ (Pemrograman Literasi).
+
+** Terus Pemrograman Literasi itu apaan?
+
+#+BEGIN_QUOTE
+Intinya sih, kamu nulis dokumen yang mendeskripsikan program yang buat. Dan sumber kode dari program-mu juga tertulis dokumen itu juga.
+#+END_QUOTE
+
+Pemrograman literasi ini beda dengan teknik-teknik pemrograman lainnya, yang mana diwujudkan dalam bentuk kode yang kita tulis. Pemrograman literasi ini lebih ke bagaimana kita *ngoding, dan mendokumentasikannya*, ibarat *nulis buku* lah.
+
+** Gils, ngapain juga aku harus ngoding dengan gaya kek gitu?
+
+Yawes, kalo anda ga tertarik gapapa. Tapi liat aja dirimu 10 tahun kedepan kalo masih jadi Programmer, dan kamu mau melihat masa mudamu yang cemerlang waktu ngoding, dan kamu gatau apa yang kamu tulis.
+
+*** Keuntungan
+
+- Kamu bisa dengan mudah memahami programmu.
+- Programmu juga akan mudah dipahami oleh orang lain.
+- Dan masih banyak lagi deh.
+
+*** Kekurangan
+
+- Toolbox-nya terbatas, setauku yang bisa kek gini dengan /smooth/ baru Emacs doang.
+- Setupnya ribet.
+- Kayaknya ga cocok kalo mau ditabrakin dengan /Design Pattern/.
+
+** Belom kebayang nih, kek gimana sih wujudnya?
+
+Wujudnya sih ya kayak tutorial-tutorial di internet, bedanya ini lebih spesifik. Aku mau ngasih contoh implementasi dari tiga fungsi dibawah, yaitu:
+
+- =getRandomInt=
+- =getRandomCats=
+- =formatCatToString=
+
+*** =getRandomInt=
+
+Fungsi dibawah ini digunakan untuk mendapatkan sebuah angka secara acak. Fungsi ini meminta dua variabel, =min= dan =max=, yang mana dua variabel itulah yang akan menentukan berapa angka minimum dan maksimum yang bisa kita dapatkan ketika kita memanggil fungsi ini. Dimana kedua angka tersebut inklusif di dalam fungsi ini.
+
+#+NAME: getRandomInt
+#+BEGIN_SRC js
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+#+END_SRC
+
+*** =getRandomCats=
+
+Fungsi ini digunakan untuk mendapatkan data Kucing secara acak. Data kucing tersebut akan memiliki skema sebagai berikut:
+
+#+NAME: catSchema
+#+BEGIN_SRC typescript
+type Cat = {
+    id: number;
+    name: string;
+    image: string;
+    race: string;
+}
+#+END_SRC
+
+**** Sumber data kucing
+
+#+NAME: catTables
+#+BEGIN_SRC js
+const cats = [
+    {
+        id: 1,
+        name: "John",
+        image: "https://placekitten.com/200/300",
+        race: "British Shorthair"
+    },
+    {
+        id: 2,
+        name: "Oyen",
+        image: "https://placekitten.com/300/200",
+        race: "Domestic Shorthair"
+    },
+    {
+        id: 3,
+        name: "Bob",
+        image: "https://placekitten.com/300/300",
+        race: "Domestic Shorthair"
+    },
+    {
+        id: 4,
+        name: "Jenny",
+        image: "https://placekitten.com/200/200",
+        race: "Domestic Shorthair"
+    },
+]
+#+END_SRC
+
+**** Implementasi fungsi
+
+Fungsi ini memiliki dependensi ke fungsi lain, yaitu fungsi =getRandomInt=, karena kita ingin mendapatkan data kucing secara acak, maka kita perlu mengambil indeks secara acak di dalam tabel kucing tadi.
+
+#+NAME: getRandomCats
+#+BEGIN_SRC js
+function getRandomCats() {
+    const catTableLength = cats.length; // Menghitung panjang daftar kucing
+    const randomCatIndex = getRandomInt(0, catTableLength - 1); // Menghitung indeks dari daftar kucing secara acak
+    return cats[randomCatIndex];
+}
+#+END_SRC
+
+Contoh pengunaan.
+
+#+NAME: getRandomCatsExample
+#+BEGIN_SRC js :noweb yes
+<<catTables>>
+<<getRandomInt>>
+<<getRandomCats>>
+return getRandomCats()
+#+END_SRC
+
+#+RESULTS: getRandomCatsExample
+: {
+:   id: 3,
+:   name: 'Bob',
+:   image: 'https://placekitten.com/300/300',
+:   race: 'Domestic Shorthair'
+: }
+
+*** =formatCatToString=
+
+Fungsi ini digunakan untuk mengolah data seekor Kucing, dan merubahnya menjadi String dengan format yang sudah ditentukan.
+
+#+NAME: formatCatToString
+#+BEGIN_SRC js
+function formatCatToString(cat) {
+    return `Kamu mengadopsi ${cat.name} dengan ras ${cat.race}, lucu kan!`
+}
+#+END_SRC
+
+*** Program adopsi kucing
+
+Kita dapat membuat sebuah program dari dua fungsi yang sudah kita buat diatas. Program ini berguna untuk mengambil data kucing secara acak dan menampilkannya dengan format:
+
+#+BEGIN_QUOTE
+Kamu mengadopsi <Nama Kucing> dengan ras <Nama Ras>, lucu kan!
+#+END_QUOTE
+
+Untuk memenuhi kebutuhan diatas, kita perlu memanggil dua fungsi tadi.
+
+#+NAME: main
+#+BEGIN_SRC js :noweb yes :results output
+<<catTables>>
+<<getRandomInt>>
+<<getRandomCats>>
+<<formatCatToString>>
+const cat = getRandomCats();
+console.log(formatCatToString(cat));
+#+END_SRC
+
+#+RESULTS: main
+: Kamu mengadopsi Oyen dengan ras Domestic Shorthair, lucu kan!
+
+** Sebagai masyarakat industri nih, aku melihat itu ga pragmatis sama sekali 😛
+
+Wo jelas, contoh tadi tuh cuma nyontohin kalo kamu ga perlu ngebikin file =.js= buat melakukan Pemrograman Literasi dengan Javascript.
+
+Nah, karena di dunia industri tuh kita dituntut buat lebih pragmatis dan ada wujudnya, maka dari itu, kuy lah kita cobain bikin sebuah *REST API* yang fungsinya buat melayani kebutuhan /Todo Application/.
+
+Disini kita bakal pake =express= sebagai /Web Framework/-nya.
+
+* Todo Application
+
+Aku gamau bahas terlalu detail terkait /express/, jadi kita langsung cekidot aja untuk instalasi /express/ dan mulai menulis kode dengan /express/.
+
+** Initialisasi Proyek Node.js
+
+Untuk menginstal /express/, kita perlu inisialisasi proyek =node.js= dulu
+
+#+NAME: initNodeJS
+#+BEGIN_SRC shell :results output code :exports both
+yarn init -y
+#+END_SRC
+
+#+RESULTS: initNodeJS
+#+begin_src shell
+yarn init v1.22.17
+success Saved package.json
+Done in 0.01s.
+#+end_src
+
+** Instal express
+
+Setelah kita menginisialisasi proyek =node.js=, kini saatnya kita instal si =express=.
+
+#+NAME: installExpress
+#+BEGIN_SRC shell :results output code :exports both
+yarn add express
+#+END_SRC
+
+#+RESULTS: installExpress
+#+begin_src shell
+yarn add v1.22.17
+info No lockfile found.
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+[4/4] Building fresh packages...
+success Saved lockfile.
+success Saved 33 new dependencies.
+info Direct dependencies
+└─ express@4.18.1
+info All dependencies
+├─ accepts@1.3.8
+├─ array-flatten@1.1.1
+├─ body-parser@1.20.0
+├─ call-bind@1.0.2
+├─ content-disposition@0.5.4
+├─ cookie-signature@1.0.6
+├─ cookie@0.5.0
+├─ ee-first@1.1.1
+├─ express@4.18.1
+├─ finalhandler@1.2.0
+├─ forwarded@0.2.0
+├─ has-symbols@1.0.3
+├─ has@1.0.3
+├─ inherits@2.0.4
+├─ ipaddr.js@1.9.1
+├─ media-typer@0.3.0
+├─ merge-descriptors@1.0.1
+├─ methods@1.1.2
+├─ mime-db@1.52.0
+├─ mime-types@2.1.35
+├─ mime@1.6.0
+├─ ms@2.0.0
+├─ negotiator@0.6.3
+├─ object-inspect@1.12.2
+├─ path-to-regexp@0.1.7
+├─ proxy-addr@2.0.7
+├─ raw-body@2.5.1
+├─ safer-buffer@2.1.2
+├─ serve-static@1.15.0
+├─ side-channel@1.0.4
+├─ toidentifier@1.0.1
+├─ utils-merge@1.0.1
+└─ vary@1.1.2
+Done in 2.84s.
+#+end_src
+
+** Setup express
+
+Setelah kalian berhasil menginstal express, kini saatnya kita buat sebuah aplikasi express yang setidaknya bisa dinyalain dan dipanggil melalui protokol HTTP.
+
+#+NAME: setupExpress
+#+BEGIN_SRC js :tangle ./index.js
+const express = require("express") // impor express
+const app = express() // initialisasi express
+#+END_SRC
+
+Jangan lupa pasang JSON Parser juga, karena kita pengen bikin REST API yang ngomong pake JSON.
+
+#+NAME: addJSONParser
+#+BEGIN_SRC js :tangle ./index.js
+app.use(express.json());
+#+END_SRC
+
+** Initialisasi Data Todo
+
+Kita ga pake /database management system/ dulu, karena ini bakal membuat sedikit lebih kompleks. Jadi ya, pake array aja, nanti kita modifikasi array tersebut berdasarkan permintaan yang terjadi di dalam server.
+
+#+NAME: todoTables
+#+BEGIN_SRC js :tangle ./index.js
+let todos = [];
+#+END_SRC
+
+Nah, untuk skema data todo sendiri bakal kayak gini.
+
+#+NAME: todoSchema
+#+BEGIN_SRC typescript
+type Todo = {
+    id: number;
+    content: string;
+    isDone: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    doneAt: Date;
+}
+#+END_SRC
+
+** Fungsi untuk menambahkan Todo
+
+Supaya user kita bisa menambahkan data Todo ke server kita, server kita harus mempunyai endpoint untuk melakukan aksi tersebut.
+
+Anggep aja endpoint ini kayak URL yang bisa kamu akses melalui browser, bedanya si URL ini nanti bakal dibuka sama program, bukan manusia kayak kamu.
+
+Nah, fungsi ini bakal terekpos di endpoint =POST /api/v1/todos=, dan fungsi ini meminta /request body/ yang sesuai dengan definisi skema dari =Todo=.
+
+#+NAME: createTodo
+#+BEGIN_SRC js :tangle ./index.js
+app.post("/api/v1/todos", (req, res) => {
+    const { content } = req.body;
+    const todoID = todos.length + 1;
+    const timestamp = new Date();
+
+    const todo = {
+        id: todoID,
+        content,
+        isDone: false,
+        createdAt: timestamp,
+        updatedAt: timestamp,
+        doneAt: null,
+    }
+
+    todos.push(todo)
+
+    res.status(201).json(todo);
+})
+#+END_SRC
+
+Nah setelah endpoint itu jadi, yawes tinggal di-/hit/ langsung aja pake Postman, atau kalo kalian males pake aplikasi GUI, pake perintah =curl= di bawah ini.
+
+#+NAME: postApiV1Todos
+#+BEGIN_SRC shell :results output code
+curl -X POST \
+     -H 'Content-Type: application/json' \
+     --data '{ "content": "Ngoding node.js" }' \
+     http://localhost:8000/api/v1/todos | python -m json.tool
+#+END_SRC
+
+#+RESULTS: postApiV1Todos
+#+begin_src shell
+{
+    "id": 1,
+    "content": "Ngoding node.js",
+    "isDone": false,
+    "createdAt": "2022-07-02T15:03:46.734Z",
+    "updatedAt": "2022-07-02T15:03:46.734Z",
+    "doneAt": null
+}
+#+end_src
+
+** Fungsi untuk melihat daftar Todo
+
+Setelah kamu selesai menambahkan apa yang harus kamu lakukan alias Todo action kalian ke dalam server, kamu juga harusnya bisa liat daftar Todo yang udah kamu masukin buat ngecek mana nih yang belum kelar dan mana yang udah kelar.
+
+Karena daftar todo itu bisa aja panjang banget, maka dari itu, sangat disarankan kalo di fungsi ini diberi parameter untuk melakukan penyaringan data. Jadi kita bisa menyaring data Todo yang udah selesai dan data Todo yang belum selesai.
+
+Nah, fungsi ini akan diekspos melalui endpoint =GET /api/v1/todos=.
+
+#+NAME: listTodos
+#+BEGIN_SRC js :tangle ./index.js
+app.get("/api/v1/todos", (req, res) => {
+  const { filters } = req.query; // Mengambil parameter filter dari user.
+
+  // Jika user mengirimkan parameter filter
+  // Maka lakukan filtering.
+  if (!!filters) {
+    const todoListResults = todos.filter((i) => {
+      return i.isDone === filters.isDone;
+    })
+
+    res.status(200).json(todoListResults);
+    return;
+  }
+
+  // Jika user tidak mengirimkan parameter filter
+  // Yaudah tampilin semua data todo
+  res.status(200).json(todos);
+});
+#+END_SRC
+
+Kalo kalian ingin mencoba endpoint diatas, kamu bisa coba pake Postman, atau pake perintah =curl= dibawah ini.
+
+#+NAME: getApiV1Todos
+#+BEGIN_SRC shell :results output code
+curl -X GET \
+     http://localhost:8000/api/v1/todos | python -m json.tool
+#+END_SRC
+
+#+RESULTS: getApiV1Todos
+#+begin_src shell
+[
+    {
+        "id": 1,
+        "content": "Ngoding node.js",
+        "isDone": false,
+        "createdAt": "2022-07-02T15:03:10.130Z",
+        "updatedAt": "2022-07-02T15:03:10.130Z",
+        "doneAt": null
+    }
+]
+#+end_src
+
+** Fungsi untuk memperbarui Todo
+
+Tentu saja, setelah kita menambahkan data Todo, pastinya kita bakal memperbarui data itu, untuk ngasih tau server kalo data Todo itu udah kelar dikerjain atau belum.
+
+Nah maka dari itu, fungsi untuk memperbarui todo diperlukan. Fungsi ini akan menerima 3 parameter, yaitu =id= dari data Todo, =content= dari data Todo tersebut karena kita ingin timpa kontennya dengan data yang baru, dan =isDone= untuk menentukan bahwa data Todo tersebut selesai dikerjakan.
+
+Fungsi ini akan diekspos melalui endpoint =PUT /api/v1/todos/{id}=
+
+#+NAME: updateTodo
+#+BEGIN_SRC js :tangle ./index.js
+app.put("/api/v1/todos/:id", (req, res) => {
+  const { id } = req.params; // Mengambil parameter id dari data Todo
+  const { content, isDone } = req.body; // Mengambil parameter content dan isDone
+
+  // Mencari data todo dengan id yang diberikan oleh user
+  const todoIndex = todos.findIndex((i) => i.id === Number(id));
+
+  // Kalo todo dengan id yang diberikan user ga ketemu
+  // Yaudah kasih tau kalo ga ketemu
+  if (todoIndex < 0) {
+    res.status(404).json({
+      error: {
+        message: "Todo not found!"
+      }
+    });
+
+    return;
+  }
+
+  const todo = todos[todoIndex];
+  const updatedTodo = {...todo, content, isDone}
+
+  // Jika sudah selesai, maka simpan timestamp
+  // ke dalam atribut doneAt
+  if (isDone) updatedTodo.doneAt = new Date();
+
+  // Memperbarui data todo dari daftar Todo;
+  todos[todoIndex] = updatedTodo;
+
+  res.status(200).json(updatedTodo);
+});
+#+END_SRC
+
+Kalo kalian ingin mencoba endpoint diatas, kamu bisa coba pake Postman, atau pake perintah =curl= dibawah ini.
+
+#+NAME: putApiV1TodosById
+#+BEGIN_SRC shell :results output code
+curl -X PUT \
+     -H 'Content-Type: application/json' \
+     --data '{ "content": "Ngoding node.js", "isDone": true }' \
+     http://localhost:8000/api/v1/todos/1 | python -m json.tool
+#+END_SRC
+
+#+RESULTS: putApiV1TodosById
+#+begin_src shell
+{
+    "id": 1,
+    "content": "Ngoding node.js",
+    "isDone": true,
+    "createdAt": "2022-07-02T15:03:10.130Z",
+    "updatedAt": "2022-07-02T15:03:10.130Z",
+    "doneAt": "2022-07-02T15:03:21.223Z"
+}
+#+end_src
+
+** Fungsi untuk menghapus Todo
+
+Kita sebagai manusia tuh gampang banget keblinger, gampang banget buat keganggu dengan hal-hal sepele. Nah, karena di aplikasi Todo ini dia nampilin semua data, entah disaring atau enggak, jadi daftar Todo tuh bisa panjang banget.
+
+Kamu mungkin pengen ngehapusin beberapa data yang udah ga diperluin, maka dari itu, kita perlu fungsi buat ngehapus data Todo dari database kita.
+
+Fungsi ini akan diekspos melalui endpoint =DELETE /api/v1/todos/{id}=. Dimana fungsi ini akan meminta 1 parameter saja, yaitu =id= dari data Todo yang pengen kita hapus.
+
+#+NAME: deleteTodo
+#+BEGIN_SRC js :tangle ./index.js
+app.delete("/api/v1/todos/:id", (req, res) => {
+  const { id } = req.params; // Mengambil parameter id dari data Todo
+  // Mencari data todo dengan id yang diberikan oleh user
+  const todoIndex = todos.findIndex((i) => i.id === Number(id));
+
+  // Kalo todo dengan id yang diberikan user ga ketemu
+  // Yaudah kasih tau kalo ga ketemu
+  if (todoIndex < 0) {
+    res.status(404).json({
+      error: {
+        message: "Todo not found!"
+      }
+    });
+
+    return;
+  }
+
+  todos = todos.filter((i) => i.id !== Number(id));
+  res.status(204).end();
+});
+#+END_SRC
+
+Kalo kalian ingin mencoba endpoint diatas, kamu bisa coba pake Postman, atau pake perintah =curl= dibawah ini.
+
+#+NAME: deleteApiV1TodosById
+#+BEGIN_SRC shell :results none
+curl -X DELETE http://localhost:8000/api/v1/todos/1
+#+END_SRC
+
+** Nyalain express server-nya
+
+Lalu yang terakhir adalah, kode untuk menyalakan server harus ditaruh dipaling akhir.
+
+#+NAME: finalExpress
+#+BEGIN_SRC js :tangle ./index.js
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+    console.log("Listening on port", PORT);
+});
+#+END_SRC
+
+* Kesimpulan
+
+Gimana, apakah Pemrograman Literasi ini sangat cocok untuk coba diekplor? Ya silahkan simpulkan sendiri. Tapi, sejauh ini kita dapat mendokumentasikan segala hal dengan baik kalau kita menggunakan paradigma pemrograman ini.
