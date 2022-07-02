@@ -2,6 +2,8 @@
 #+AUTHOR: Fikri Rahmat Nurhidayat
 #+EMAIL: fikrirnurhidayat@gmail.com
 
+Pemrograman terpelajar? Pemrograman sastra? Pemrograman non-primitif?
+
 * Kamu mau ngapain sih, Fik?
 
 Gatau, gabut, yaudah aku bikin video aja.
